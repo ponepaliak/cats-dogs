@@ -1,0 +1,38 @@
+body {
+    background-color: blue;
+    padding: 0px;
+    margin: 0px;
+}
+.inhabitants-text {
+    background-color: #34110b;
+    color: yellow;
+    padding: 15px;
+    width: 100%;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+}
+
+.inhabitants-buttons {
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.inhabitants-buttons .btn {
+    height: 17px;
+    width: 142px;
+    background: yellow;
+    border-radius: 2px;
+    text-align: center;
+    padding: 10px 0;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.inhabitant-data {
+    margin-left: 20px;
+}

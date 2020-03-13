@@ -1,0 +1,25 @@
+{
+  "name": "cats-and-dogs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Simulation.js",
+  "directories": {
+    "src": "src"
+  },
+  "dependencies": {
+    "assert": "^2.0.0",
+    "ws": "^7.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^13.9.0",
+    "@types/ws": "^7.2.2",
+    "mocha": "^7.1.0",
+    "typescript": "^3.8.3"
+  },
+  "scripts": {
+    "start": "node src/Server/Server.js",
+    "server": "node src/Server/Server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

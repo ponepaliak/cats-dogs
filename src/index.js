@@ -1,0 +1,22 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const InhabitantsFactory_1 = require("./Factory/InhabitantsFactory");
+const Universe_1 = require("./InhabitantsContainer/Universe");
+console.log('import');
+let firstFactory = new InhabitantsFactory_1.InhabitantsFactory();
+let secondFactory = new InhabitantsFactory_1.InhabitantsFactory();
+let universeItem = new Universe_1.Universe();
+let firstWorld = universeItem.createWorld(firstFactory);
+let secondWorld = universeItem.createWorld(secondFactory);
+let dogFfw = firstWorld.createDog();
+let catFfw = firstWorld.createCat();
+let catSfw = firstWorld.createCat();
+let bulFfw = firstWorld.createBuldozer();
+let catFsw = secondWorld.createCat();
+dogFfw.eatCat(catFfw);
+dogFfw.eatCat(catSfw);
+console.log(dogFfw.getEatenCatsNumber());
+bulFfw.destroyDog(dogFfw);
+console.log(bulFfw.getEatenCatsByDogsNumber());
+console.log(bulFfw.getDestroyedDogsNumber());
+//# sourceMappingURL=index.js.map
