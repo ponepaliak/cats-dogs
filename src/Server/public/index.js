@@ -8,7 +8,7 @@ const writeLine = text => {
     // const content = `<span class="inhabitant-data">> ${text}</span>`;
     const data = JSON.parse(text);
     console.log(data);
-    const content = `<img src="${data._image}" class="inh-img">`;
+    const content = `<div class="inh-container"><img src=${data._image} class="inh-img"><span>${data._name}</span></div>`;
     console.log(content);
     inhabitantsText.innerHTML += content;
 };

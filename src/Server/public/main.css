@@ -10,7 +10,9 @@ body {
     width: 98.4%;
     height: 500px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-basis: 100%;
+    flex-wrap: wrap;
     justify-content: left;
 }
 
@@ -37,7 +39,24 @@ body {
     margin-left: 20px;
 }
 
+.inh-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.inh-container {
+    color: yellow;
+    font-family: monospace;
+    font-size: 15px;
+    padding: 15px;
+}
+
+.inh-container {
+    width: 130px;
+    text-align: center;
+}
+
 .inh-img {
-    width: 100px;
-    margin: 15px;
+    width: 130px;
+    margin-bottom: 10px;
 }
