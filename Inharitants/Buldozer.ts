@@ -31,13 +31,4 @@ export class Buldozer extends AbstractInhabitant implements InhabitantInterface 
     public getEatenCatsByDogsNumber(): number {
         return this.eatenCatsByDogsNumber;
     }
-
-    public toJSON(): string {
-        let clone: Object = {...this};
-        delete clone["worldActions"];
-
-        // delete clone["worldActions"]["buldozersList"];
-        // delete clone["worldActions"]["inhabitantsFactory"];
-        return JSON.stringify(clone);
-    }
 }

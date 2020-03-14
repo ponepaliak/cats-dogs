@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class Buldozer {
+const AbstractInhabitant_1 = require("./AbstractInhabitant");
+class Buldozer extends AbstractInhabitant_1.AbstractInhabitant {
     constructor(worldActions) {
+        super();
         this.destroyedDogsNumber = 0;
         this.eatenCatsByDogsNumber = 0;
         this.worldActions = worldActions;
@@ -20,11 +22,6 @@ class Buldozer {
     }
     getEatenCatsByDogsNumber() {
         return this.eatenCatsByDogsNumber;
-    }
-    toJSON() {
-        let clone = Object.assign({}, this);
-        delete clone["worldActions"];
-        return JSON.stringify(clone);
     }
 }
 exports.Buldozer = Buldozer;

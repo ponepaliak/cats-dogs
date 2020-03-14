@@ -1,29 +1,3 @@
-// import * as http from 'http';
-// import {IncomingMessage, ServerResponse} from "http";
-// import {Universe} from "../InhabitantsContainer/Universe";
-// import {InhabitantsFactory} from "../Factory/InhabitantsFactory";
-// import {World} from "../InhabitantsContainer/World";
-// import {Dog} from "../Inharitants/Dog";
-//
-// function cloneDog(dog: Dog): Object {
-//     let cloneDog = {};
-//     for (let key in dog) {
-//         cloneDog[key] = dog[key];
-//     }
-//     delete cloneDog["worldActions"]["dogsList"];
-//     delete cloneDog["worldActions"]["inhabitantsFactory"];
-//     return cloneDog;
-// }
-//
-// http.createServer(function (request:IncomingMessage, response:ServerResponse): void {
-//     let universe: Universe = new Universe();
-//     let factory: InhabitantsFactory = new InhabitantsFactory();
-//     let world: World = universe.createWorld(factory);
-//     let firstDog: Dog = world.createDog();
-//     response.end(JSON.stringify(cloneDog(firstDog)));
-// }).listen(3000);
-
-
 import * as http from 'http';
 import * as fs from 'fs';
 import {Universe} from "../InhabitantsContainer/Universe";
@@ -33,6 +7,8 @@ import {IncomingMessage, ServerResponse} from "http";
 import WebSocket, {MessageEvent} from "ws";
 import {Dog} from "../Inharitants/Dog";
 import {Cat} from "../Inharitants/Cat";
+import {Buldozer} from "../Inharitants/Buldozer";
+import {Router} from "./Router";
 
 function createWorld(): World {
     const universe: Universe = new Universe();
@@ -40,33 +16,23 @@ function createWorld(): World {
     return universe.createWorld(factory);
 }
 
-function routing(url: string): string {
-    let content: string;
-    switch (url) {
-        case '/':
-            content = fs.readFileSync('src/Server/public/index.html', 'utf8');
-            break;
-        case '/main.css':
-            content = fs.readFileSync('src/Server/public/main.css', 'utf8');
-            break;
-        case '/index.js':
-            content = fs.readFileSync('src/Server/public/index.js', 'utf8');
-            break;
-    }
-    return content;
-}
-
 function getInhabitant(world: World, inhabitantType: string): string {
     let inhabitant: string;
     switch (inhabitantType) {
         case 'cat':
-            inhabitant =  world.createCat().toJSON();
+            let cat: Cat =  world.createCat();
+            cat.image = "image/cat.png";
+            inhabitant = cat.toJSON();
             break;
         case 'dog':
-            inhabitant =  world.createDog().toJSON();
+            let dog: Dog = world.createDog();
+            dog.image = "image/dog.jpg";
+            inhabitant =  dog.toJSON();
             break;
         case 'buldozer':
-            inhabitant =  world.createBuldozer().toJSON();
+            let buldozer: Buldozer = world.createBuldozer();
+            buldozer.image = "image/buldozer.png";
+            inhabitant =  buldozer.toJSON();
             break;
     }
     return inhabitant;
@@ -74,8 +40,7 @@ function getInhabitant(world: World, inhabitantType: string): string {
 
 http.createServer(function (request: IncomingMessage, response: ServerResponse): void {
     response.writeHead(200);
-    const content: string = routing(request.url);
-    response.end(content);
+    Router.routing(request.url, response);
 }).listen(8000);
 
 const options: WebSocket.ServerOptions = {

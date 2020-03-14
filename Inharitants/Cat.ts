@@ -13,10 +13,4 @@ export class Cat extends AbstractInhabitant implements InhabitantInterface {
     getWorld(): WorldIdentificationInterface {
         return this.worldActions;
     }
-
-    public toJSON(): string {
-        let clone: Object = {...this};
-        delete clone["worldActions"];
-        return JSON.stringify(clone);
-    }
 }

@@ -26,5 +26,4 @@ export class Dog extends AbstractInhabitant implements InhabitantInterface  {
     public getEatenCatsNumber() {
         return this.eatenCatsNumber;
     }
-
 }

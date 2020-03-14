@@ -11,49 +11,39 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const http = __importStar(require("http"));
-const fs = __importStar(require("fs"));
 const Universe_1 = require("../InhabitantsContainer/Universe");
 const InhabitantsFactory_1 = require("../Factory/InhabitantsFactory");
 const ws_1 = __importDefault(require("ws"));
+const Router_1 = require("./Router");
 function createWorld() {
     const universe = new Universe_1.Universe();
     const factory = new InhabitantsFactory_1.InhabitantsFactory();
     return universe.createWorld(factory);
 }
-function routing(url) {
-    let content;
-    switch (url) {
-        case '/':
-            content = fs.readFileSync('src/Server/public/index.html', 'utf8');
-            break;
-        case '/main.css':
-            content = fs.readFileSync('src/Server/public/main.css', 'utf8');
-            break;
-        case '/index.js':
-            content = fs.readFileSync('src/Server/public/index.js', 'utf8');
-            break;
-    }
-    return content;
-}
 function getInhabitant(world, inhabitantType) {
     let inhabitant;
     switch (inhabitantType) {
         case 'cat':
-            inhabitant = world.createCat().toJSON();
+            let cat = world.createCat();
+            cat.image = "image/cat.png";
+            inhabitant = cat.toJSON();
             break;
         case 'dog':
-            inhabitant = world.createDog().toJSON();
+            let dog = world.createDog();
+            dog.image = "image/dog.jpg";
+            inhabitant = dog.toJSON();
             break;
         case 'buldozer':
-            inhabitant = world.createBuldozer().toJSON();
+            let buldozer = world.createBuldozer();
+            buldozer.image = "image/buldozer.png";
+            inhabitant = buldozer.toJSON();
             break;
     }
     return inhabitant;
 }
 http.createServer(function (request, response) {
     response.writeHead(200);
-    const content = routing(request.url);
-    response.end(content);
+    Router_1.Router.routing(request.url, response);
 }).listen(8000);
 const options = {
     "port": 7000

@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class Dog {
+const AbstractInhabitant_1 = require("./AbstractInhabitant");
+class Dog extends AbstractInhabitant_1.AbstractInhabitant {
     constructor(worldActions) {
+        super();
         this.eatenCatsNumber = 0;
         this.worldActions = worldActions;
     }
@@ -16,11 +18,6 @@ class Dog {
     }
     getEatenCatsNumber() {
         return this.eatenCatsNumber;
-    }
-    toJSON() {
-        let clone = Object.assign({}, this);
-        delete clone["worldActions"];
-        return JSON.stringify(clone);
     }
 }
 exports.Dog = Dog;

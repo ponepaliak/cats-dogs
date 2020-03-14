@@ -7,7 +7,7 @@ body {
     background-color: #34110b;
     color: yellow;
     padding: 15px;
-    width: 100%;
+    width: 98.4%;
     height: 500px;
     display: flex;
     flex-direction: column;
@@ -35,4 +35,9 @@ body {
 
 .inhabitant-data {
     margin-left: 20px;
+}
+
+.inh-img {
+    width: 100px;
+    margin: 15px;
 }

@@ -1,10 +1,10 @@
 import * as worldIdentification from "../Interface/WorldIdentificationInterface";
 
 export abstract class AbstractInhabitant {
-    private _name: string;
-    private _image: string;
-    private _x: number;
-    private _y: number;
+    private _name: string = "";
+    private _image: string = "";
+    private _x: number = 0;
+    private _y: number = 0;
 
     get name(): string {
         return this._name;
@@ -20,6 +20,14 @@ export abstract class AbstractInhabitant {
 
     get y(): number {
         return this._y;
+    }
+
+    set name(name: string) {
+        this._name = name;
+    }
+
+    set image(image: string) {
+        this._image = image;
     }
 
     public move(x: number, y: number): void {

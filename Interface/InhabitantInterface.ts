@@ -7,5 +7,5 @@ export interface InhabitantInterface {
     // y(): number;
     // move(x: number, y: number)
     getWorld(): worldIdentification.WorldIdentificationInterface;
-    // toJSON(): string;
+    toJSON(): string;
 }
