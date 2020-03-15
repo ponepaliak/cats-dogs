@@ -1,1 +1,0 @@
-{"version":3,"file":"Cat.js","sourceRoot":"","sources":["../../src/Inharitants/Cat.ts"],"names":[],"mappings":";;AAEA,6DAAwD;AAExD,MAAa,GAAI,SAAQ,uCAAkB;IAGvC,YAAY,YAAwE;QAChF,KAAK,EAAE,CAAC;QACR,IAAI,CAAC,YAAY,GAAG,YAAY,CAAC;IACrC,CAAC;IAED,QAAQ;QACJ,OAAO,IAAI,CAAC,YAAY,CAAC;IAC7B,CAAC;CACJ;AAXD,kBAWC"}

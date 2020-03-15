@@ -35,7 +35,7 @@ export class InhabitantsMaker {
 
     private static initCat(): string {
         let cat: Cat =  this.world.createCat();
-        cat.image = "image/cat2.png";
+        cat.image = "image/cat.png";
         cat.name = `barsik-${++this.catsCount}`;
         return  cat.toJSON();
     }

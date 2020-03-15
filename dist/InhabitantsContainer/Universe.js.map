@@ -1,1 +1,0 @@
-{"version":3,"file":"Universe.js","sourceRoot":"","sources":["../../src/InhabitantsContainer/Universe.ts"],"names":[],"mappings":";;AAAA,mCAA8B;AAG9B,MAAa,QAAQ;IAArB;QACY,eAAU,GAAY,EAAE,CAAC;IAOrC,CAAC;IALU,WAAW,CAAC,OAAoC;QACnD,IAAI,SAAS,GAAG,IAAI,aAAK,CAAC,OAAO,CAAC,CAAC;QACnC,IAAI,CAAC,UAAU,CAAC,IAAI,CAAC,SAAS,CAAC,CAAC;QAChC,OAAO,SAAS,CAAC;IACrB,CAAC;CACJ;AARD,4BAQC"}
