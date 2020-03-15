@@ -27,7 +27,7 @@ InhabitantsMaker.createWorld();
 
 ws.on("connection", function(wsNew: WebSocket) {
     wsNew.on("message", function (message: string) {
-        console.log(typeof message);
+        console.log(message);
         wsNew.send(InhabitantsMaker.getInhabitant(message));
     });
 });

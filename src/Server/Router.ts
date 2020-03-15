@@ -35,7 +35,7 @@ export class Router {
     private static getPublicFile(path: string, response: ServerResponse): void {
         let content: string;
         try {
-            content =  fs.readFileSync(`src/Server${path}`, 'utf8');
+            content =  fs.readFileSync(`dist/Server${path}`, 'utf8');
             response.writeHead(200, this.getHeader(path));
         } catch (e) {
             console.error(e.message);
@@ -47,7 +47,7 @@ export class Router {
     private static getImage(path: string, response: ServerResponse): void {
         let content: Buffer;
         try {
-            let content: Buffer = fs.readFileSync(`src/Server${path}`);
+            let content: Buffer = fs.readFileSync(`dist/Server${path}`);
             response.writeHead(200, this.getHeader(path));
             response.end(content, 'binary');
         } catch (e) {

@@ -1,32 +1,66 @@
-"use strict";
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
+import * as http from 'http';
+import * as fs from 'fs';
+import * as ws from 'ws';
+import { inspect } from "util";
+import { Universe } from "../InhabitantsContainer/Universe";
+import { InhabitantsFactory } from "../Factory/InhabitantsFactory";
+const port1 = 7000;
+// console.log(inspect(new ws.default.Server({"port": port1})));
+// console.log(typeof ws);
+
+const createWorld = () => {
+    let universe = new Universe();
+    let factory = new InhabitantsFactory();
+    return  universe.createWorld(factory);
+}
+
+const cloneDog = (dog) => {
+    let cloneDog = {};
+    for (let key in dog) {
+        cloneDog[key] = dog[key];
+    }
+    delete cloneDog["worldActions"]["dogsList"];
+    delete cloneDog["worldActions"]["inhabitantsFactory"];
+    return cloneDog;
+}
+
+const routing = (url) => {
+    let content = '';
+
+    switch (url) {
+        case '/':
+            content = fs.readFileSync('public/index.html', 'utf8');
+            break;
+        case '/main.css':
+            content = fs.readFileSync('public/main.css', 'utf8');
+            break;
+        case '/index.js':
+            content = fs.readFileSync('public/index.js', 'utf8');
+            break;
+    }
+
+    return content;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const http = __importStar(require("http"));
-const ws_1 = __importDefault(require("ws"));
-const Router_1 = require("./Router");
-const InhabitantsMaker_1 = require("./InhabitantsMaker");
+
+const world = createWorld();
+
+const getInhabitant = text => {
+    const dog = cloneDog(world.createDog());
+    return JSON.stringify(cloneDog);
+}
+
 http.createServer(function (request, response) {
     response.writeHead(200);
-    Router_1.Router.routing(request.url, response);
-}).listen(8000);
-const options = {
-    "port": 7000
-};
-const ws = new ws_1.default.Server(options);
-InhabitantsMaker_1.InhabitantsMaker.createWorld();
-ws.on("connection", function (wsNew) {
-    wsNew.on("message", function (message) {
-        console.log(typeof message);
-        wsNew.send(InhabitantsMaker_1.InhabitantsMaker.getInhabitant(message));
-    });
-});
-//# sourceMappingURL=Server.js.map
+    const content = routing(request.url);
+    response.end(content);
+}).listen(3000);
+
+const port = 7000;
+
+// const ws = Websocket.Server({port});
+//
+// ws.on("connection", ws1 => {
+//     ws1.on("message", message => {
+//         ws1.send(getInhabitant(message));
+//     })
+// })

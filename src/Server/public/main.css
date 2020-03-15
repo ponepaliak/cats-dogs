@@ -7,13 +7,8 @@ body {
     background-color: #34110b;
     color: yellow;
     padding: 15px;
-    width: 98.4%;
+    width: 100%;
     height: 500px;
-    display: flex;
-    flex-direction: row;
-    flex-basis: 100%;
-    flex-wrap: wrap;
-    justify-content: left;
 }
 
 .inhabitants-buttons {
@@ -33,30 +28,4 @@ body {
     padding: 10px 0;
     font-family: monospace;
     font-weight: bold;
-}
-
-.inhabitant-data {
-    margin-left: 20px;
-}
-
-.inh-container {
-    display: flex;
-    flex-direction: column;
-}
-
-.inh-container {
-    color: yellow;
-    font-family: monospace;
-    font-size: 15px;
-    padding: 15px;
-}
-
-.inh-container {
-    width: 130px;
-    text-align: center;
-}
-
-.inh-img {
-    width: 130px;
-    margin-bottom: 10px;
 }

@@ -4,7 +4,7 @@
   "description": "",
   "main": "Simulation.js",
   "directories": {
-    "src": "src"
+    "src": "dist"
   },
   "dependencies": {
     "assert": "^2.0.0",
@@ -14,11 +14,12 @@
     "@types/node": "^13.9.0",
     "@types/ws": "^7.2.2",
     "mocha": "^7.1.0",
+    "ts-loader": "^6.2.1",
     "typescript": "^3.8.3"
   },
   "scripts": {
-    "start": "node src/Server/Server.js",
-    "server": "node src/Server/Server.js"
+    "start": "node dist/Server/Server.js",
+    "server": "node dist/Server/Server.js"
   },
   "author": "",
   "license": "ISC"
