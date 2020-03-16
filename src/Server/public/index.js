@@ -5,8 +5,12 @@ const catButton = document.getElementsByClassName('cat-button')[0];
 const buldozerButton = document.getElementsByClassName('buldozer-button')[0];
 
 const writeLine = text => {
-    const content = `<span>> ${text}</span>`
-    inhabitantsText.html += content;
+    // const content = `<span class="inhabitant-data">> ${text}</span>`;
+    const data = JSON.parse(text);
+    console.log(data);
+    const content = `<div class="inh-container"><img src=${data._image} class="inh-img"><span>${data._name}</span></div>`;
+    console.log(content);
+    inhabitantsText.innerHTML += content;
 };
 
 dogButton.addEventListener('click', event => {
@@ -22,5 +26,6 @@ buldozerButton.addEventListener('click', event => {
 });
 
 socket.onmessage = event => {
+    console.log(event.data);
     writeLine(event.data);
 };

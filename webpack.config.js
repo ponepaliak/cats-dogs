@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: './src/Server/Server.ts',
@@ -17,6 +18,12 @@ module.exports = {
             }
         ]
     },
+    plugins: [
+        new CopyWebpackPlugin([
+            {from: 'src/Server/image', to: 'Server/image'},
+            {from: 'src/Server/public', to: 'Server/public'}
+        ])
+    ],
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
     },
