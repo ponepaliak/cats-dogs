@@ -4,6 +4,7 @@ import {Cat} from "../Inharitants/Cat";
 import {Dog} from "../Inharitants/Dog";
 import {InhabitantInterface} from "../Interface/InhabitantInterface";
 import {WorldActionsForInhabitantsInterface} from "../Interface/IWorldActions";
+import {AbstractInhabitant} from "../Inharitants/AbstractInhabitant";
 
 export class World implements WorldActionsForInhabitantsInterface {
     private static count: number = 0;
@@ -12,6 +13,7 @@ export class World implements WorldActionsForInhabitantsInterface {
     private catsList: Cat[] = [];
     private dogsList: Dog[] = [];
     private buldozersList: Buldozer[] = [];
+    private map: {} = {};
 
     constructor(inhabitantsFactory: InhabitantsFactoryInterface) {
         this.inhabitantsFactory = inhabitantsFactory;
@@ -43,6 +45,27 @@ export class World implements WorldActionsForInhabitantsInterface {
         let buldozer = this.inhabitantsFactory.createBuldozer();
         this.buldozersList.push(buldozer);
         return buldozer;
+    }
+
+    public generateMap() {
+        this.map = {};
+        this.addElementsToMap(this.catsList);
+        this.addElementsToMap(this.dogsList);
+        this.addElementsToMap(this.buldozersList);
+    }
+
+    private addElementsToMap(inhabitants: AbstractInhabitant[]) {
+        for (let inhabitant of inhabitants) {
+            if (!this.map.hasOwnProperty(inhabitant.getCoordinates())) {
+                this.map[inhabitant.getCoordinates()]  = [inhabitant];
+            } else {
+                this.map[inhabitant.getCoordinates()].push(inhabitant);
+            }
+        }
+    }
+
+    public getInhabitantsByCoordinates(coordinates: string) {
+        return this.map.hasOwnProperty(coordinates) ? this.map[coordinates] : [];
     }
 
     public checkIfInOneWorld(firstInhabitant: InhabitantInterface, secondInhabitant: InhabitantInterface): void {

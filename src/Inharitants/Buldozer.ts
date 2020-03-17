@@ -2,6 +2,7 @@ import {WorldActionsForBuldozersInterface, WorldIdentificationInterface} from ".
 import {Dog} from "./Dog";
 import {InhabitantInterface} from "../Interface/InhabitantInterface";
 import {AbstractInhabitant} from "./AbstractInhabitant";
+import {InhabitantsTypes} from "./InhabitantsTypes";
 
 export class Buldozer extends AbstractInhabitant implements InhabitantInterface {
     private worldActions: WorldActionsForBuldozersInterface & WorldIdentificationInterface;
@@ -9,7 +10,7 @@ export class Buldozer extends AbstractInhabitant implements InhabitantInterface 
     private eatenCatsByDogsNumber: number = 0;
 
     constructor(worldActions: WorldActionsForBuldozersInterface & WorldIdentificationInterface) {
-        super();
+        super(InhabitantsTypes.Buldozer);
         this.worldActions = worldActions;
     }
 

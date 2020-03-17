@@ -18,7 +18,8 @@ export interface WorldActionsForDogInterface {
 }
 
 export interface WorldActionsForInhabitantsMovementInterface {
-
+    generateMap(): void;
+    getInhabitantsByCoordinates(coordinates: string): [];
 }
 
 export interface WorldIdentificationInterface {
