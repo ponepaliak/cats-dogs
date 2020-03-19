@@ -31,10 +31,6 @@ export class World implements WorldActionsForInhabitantsInterface {
         return cat;
     }
 
-    public catNumbers() {
-        console.log(this.catsList.length, this.id);
-    }
-
     public createDog(): Dog {
         let dog = this.inhabitantsFactory.createDog();
         this.dogsList.push(dog);
@@ -47,6 +43,22 @@ export class World implements WorldActionsForInhabitantsInterface {
         return buldozer;
     }
 
+    public moveAllInhabitants(): void {
+        for (let cat of this.catsList) cat.move();
+        for (let dog of this.dogsList) dog.move();
+        for (let buldozer of this.buldozersList) buldozer.move();
+    }
+
+    public inhabitantsEating() {
+        for (let dog of this.dogsList) {
+            dog.getInhabitantsByCoordinates();
+        }
+
+        for (let buldozer of this.buldozersList) {
+            buldozer.getInhabitantsByCoordinates();
+        }
+    }
+
     public generateMap() {
         this.map = {};
         this.addElementsToMap(this.catsList);
@@ -56,10 +68,14 @@ export class World implements WorldActionsForInhabitantsInterface {
 
     private addElementsToMap(inhabitants: AbstractInhabitant[]) {
         for (let inhabitant of inhabitants) {
-            if (!this.map.hasOwnProperty(inhabitant.getCoordinates())) {
-                this.map[inhabitant.getCoordinates()]  = [inhabitant];
+            if (inhabitant.coordinates.x === null || inhabitant.coordinates.x === NaN) {
+                console.log(inhabitant);
+                process.exit(1);
+            }
+            if (!this.map.hasOwnProperty(inhabitant.coordinatesString())) {
+                this.map[inhabitant.coordinatesString()]  = [inhabitant];
             } else {
-                this.map[inhabitant.getCoordinates()].push(inhabitant);
+                this.map[inhabitant.coordinatesString()].push(inhabitant);
             }
         }
     }
@@ -97,12 +113,30 @@ export class World implements WorldActionsForInhabitantsInterface {
     }
 
     public dropCat(cat: Cat): void {
-        delete this.catsList[ this.catsList.indexOf(cat) ];
+        this.catsList.splice(this.catsList.indexOf(cat), 1);
+        this.generateMap();
     }
 
     public dropDog(dog: Dog): void {
-        delete this.dogsList[ this.dogsList.indexOf(dog) ];
+        this.dogsList.splice(this.dogsList.indexOf(dog), 1);
+        this.generateMap();
     }
+
+    public getAllCats(): string[] {
+        let result = [];
+        for (let cat of this.catsList) result.push(cat.toJSON());
+        return result;
+    }
+
+    public getAllDogs(): string[] {
+        let result = [];
+        for (let dog of this.dogsList) result.push(dog.toJSON());
+        return result;    }
+
+    public getAllBuldozers(): string[] {
+        let result = [];
+        for (let buldozer of this.buldozersList) result.push(buldozer.toJSON());
+        return result;    }
 
     public some(): void {
 

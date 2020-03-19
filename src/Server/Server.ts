@@ -1,16 +1,11 @@
 import * as http from 'http';
-import * as fs from 'fs';
-import {Universe} from "../InhabitantsContainer/Universe";
-import {InhabitantsFactory} from "../Factory/InhabitantsFactory";
-import {World} from "../InhabitantsContainer/World";
 import {IncomingMessage, ServerResponse} from "http";
-import WebSocket, {MessageEvent} from "ws";
-import {Dog} from "../Inharitants/Dog";
-import {Cat} from "../Inharitants/Cat";
-import {Buldozer} from "../Inharitants/Buldozer";
+import WebSocket from "ws";
 import {Router} from "./Router";
 import {InhabitantsMaker} from "./InhabitantsMaker";
-
+import {Simulation} from "./Simulation";
+import {World} from "../InhabitantsContainer/World";
+import {worker} from "cluster";
 
 
 http.createServer(function (request: IncomingMessage, response: ServerResponse): void {
@@ -26,8 +21,13 @@ const ws = new WebSocket.Server(options);
 InhabitantsMaker.createWorld();
 
 ws.on("connection", function(wsNew: WebSocket) {
-    wsNew.on("message", function (message: string) {
-        console.log(message);
-        wsNew.send(InhabitantsMaker.getInhabitant(message));
-    });
+    Simulation.init();
+    let world: World = Simulation.getWorld();
+    Simulation.sendData(wsNew);
+    setInterval(Simulation.generateNewInhabitants.bind(Simulation), 200);
+    setInterval(Simulation.step.bind(Simulation), 100, wsNew);
+    // wsNew.on("message", function (message: string) {
+        // console.log(message);
+        // wsNew.send(InhabitantsMaker.getInhabitant(message));
+    // });
 });

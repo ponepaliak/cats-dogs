@@ -18,7 +18,7 @@ export class Dog extends AbstractInhabitant implements InhabitantInterface  {
     }
 
     public getInhabitantsByCoordinates() {
-        let inhabitants: AbstractInhabitant[] = this.worldActions.getInhabitantsByCoordinates(this.getCoordinates());
+        let inhabitants: AbstractInhabitant[] = this.worldActions.getInhabitantsByCoordinates(this.coordinatesString());
         for (let inhabitant of inhabitants) {
             if (this.isCat(inhabitant)) this.eatCat(<Cat>inhabitant);
         }
