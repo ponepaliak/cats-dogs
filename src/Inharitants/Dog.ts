@@ -42,4 +42,9 @@ export class Dog extends AbstractInhabitant implements InhabitantInterface  {
     public getEatenCatsNumber() {
         return this.eatenCatsNumber;
     }
+
+    public move(): void {
+        this.checkDirection(this.worldActions, InhabitantsTypes.Buldozer);
+        this.moving();
+    }
 }

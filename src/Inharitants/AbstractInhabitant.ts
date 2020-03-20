@@ -2,6 +2,11 @@ import * as worldIdentification from "../Interface/WorldIdentificationInterface"
 import {Runtime} from "inspector";
 import {InhabitantsTypes} from "./InhabitantsTypes";
 import {Vector} from "../Interface/InhabitantInterface";
+import {
+    WorldActionsForCatInterface,
+    WorldActionsForInhabitantsMovementInterface,
+    WorldIdentificationInterface
+} from "../Interface/IWorldActions";
 
 export abstract class AbstractInhabitant {
     protected static _idCounter: number = 0;
@@ -15,6 +20,7 @@ export abstract class AbstractInhabitant {
     protected _type: InhabitantsTypes;
     protected static _dimension: number;
     protected surroundingInhabitants: Object = {};
+
 
     protected constructor(type: InhabitantsTypes) {
         this._id = AbstractInhabitant._idCounter++;
@@ -92,6 +98,10 @@ export abstract class AbstractInhabitant {
     }
 
     public move(): void {
+        this.moving();
+    }
+
+    protected moving(): void {
         this._coordinates.x = this.module(this._coordinates.x +this._direction.x * this._speed);
         this._coordinates.y = this.module(this._coordinates.y + this._direction.y * this._speed);
     }
@@ -103,6 +113,53 @@ export abstract class AbstractInhabitant {
 
     get type(): InhabitantsTypes {
         return this._type;
+    }
+
+    protected getSafeZones(worldActions: WorldActionsForInhabitantsMovementInterface, dangerousType: InhabitantsTypes): Vector[] {
+        let coordinates: Vector = this.intCoordinates;
+        let isDangerous: boolean = false;
+        let safeZones: Vector[] = [];
+        for (let i = -1; i < 2; i++) {
+            for (let j = -1; j < 2; j++) {
+                isDangerous = false;
+                if (i == 0 && j == 0) continue;
+                let checkingCoordinates: string = JSON.stringify({x: coordinates.x + i, y: coordinates.y + j});
+                let inhabitants: AbstractInhabitant[] = worldActions.getInhabitantsByCoordinates(checkingCoordinates);
+                if (inhabitants === undefined) continue;
+                for (let inhabitant of inhabitants) {
+                    if (inhabitant._type === dangerousType) {
+                        isDangerous = true;
+                        break;
+                    }
+                }
+                if (!isDangerous) safeZones.push(JSON.parse(checkingCoordinates));
+            }
+        }
+        return safeZones;
+    }
+
+    protected getExpectedCoordinates(): Vector {
+        return {
+            x: this.module(this._coordinates.x + this._direction.x * this._speed),
+            y: this.module(this._coordinates.y + this._direction.y * this._speed)
+        };
+    }
+
+    protected checkDirection(worldActions: WorldActionsForInhabitantsMovementInterface, dangerousType: InhabitantsTypes): void {
+        let safeZones = this.getSafeZones(worldActions, InhabitantsTypes.Dog);
+        let expectingCoordinates = this.getExpectedCoordinates();
+        let expectingCoordinatesJ = JSON.stringify(expectingCoordinates);
+        if (safeZones[expectingCoordinatesJ] === undefined) {
+            if (safeZones.length !== 0) this.changeDirection(safeZones[0]);
+        }
+    }
+
+    protected changeDirection(safeCoordinates: Vector): void {
+        let x: number = safeCoordinates.x - this._coordinates.x;
+        let y: number = safeCoordinates.y - this._coordinates.y;
+        let module = Math.sqrt(x * x + y * y);
+        this._direction.x = x / module;
+        this._direction.y = y / module;
     }
 
     public toJSON(): string {
