@@ -4,16 +4,17 @@ import {InhabitantsTypes} from "./InhabitantsTypes";
 import {Vector} from "../Interface/InhabitantInterface";
 
 export abstract class AbstractInhabitant {
-    private static _idCounter: number = 0;
-    private _id: number;
-    private _name: string = "";
-    private _image: string = "";
-    private _coordinates: Vector = {x: 0, y: 0};
-    private _direction: Vector = {x: 0, y: 0};
-    private _speed: number = 2;
-    private _timeMark: number;
-    private _type: InhabitantsTypes;
-    private static _dimension: number;
+    protected static _idCounter: number = 0;
+    protected _id: number;
+    protected _name: string = "";
+    protected _image: string = "";
+    protected _coordinates: Vector = {x: 0, y: 0};
+    protected _direction: Vector = {x: 0, y: 0};
+    protected _speed: number = 2;
+    protected _timeMark: number;
+    protected _type: InhabitantsTypes;
+    protected static _dimension: number;
+    protected surroundingInhabitants: Object = {};
 
     protected constructor(type: InhabitantsTypes) {
         this._id = AbstractInhabitant._idCounter++;
@@ -24,20 +25,18 @@ export abstract class AbstractInhabitant {
         this._speed = 1;
     }
 
-    private generateDirection(): Vector {
-        let x = this.getRandomInt(AbstractInhabitant._dimension) + 1;
-        let y = this.getRandomInt(AbstractInhabitant._dimension) + 1;
-        const directionModule = Math.sqrt( Math.pow(x, 2) + Math.pow(y, 2));
-        const finishX = x / directionModule;
-        const finishY = y / directionModule;
+    protected generateDirection(): Vector {
+        let angle = this.getRandomInt(360);
+        const finishX = Math.sin(angle * Math.PI / 180);
+        const finishY = Math.cos(angle * Math.PI / 180);
         return {'x': finishX, 'y': finishY};
     }
 
-    private getRandomInt(max: number): number {
+    protected getRandomInt(max: number): number {
         return Math.floor(Math.random() * Math.floor(max));
     }
 
-    private generateCoordinates(): Vector {
+    protected generateCoordinates(): Vector {
         return {x: this.getRandomInt(AbstractInhabitant._dimension), y: this.getRandomInt(AbstractInhabitant._dimension)};
     }
 
@@ -73,7 +72,7 @@ export abstract class AbstractInhabitant {
         return this._dimension;
     }
 
-    private get intCoordinates(): Vector {
+    protected get intCoordinates(): Vector {
         return {
             x: Math.floor(this._coordinates.x),
             y: Math.floor(this._coordinates.y)
@@ -93,9 +92,13 @@ export abstract class AbstractInhabitant {
     }
 
     public move(): void {
-        this._coordinates.x = (this._coordinates.x +this._direction.x * this._speed) % AbstractInhabitant._dimension;
-        this._coordinates.y = (this._coordinates.y + this._direction.y * this._speed) % AbstractInhabitant._dimension;
+        this._coordinates.x = this.module(this._coordinates.x +this._direction.x * this._speed);
+        this._coordinates.y = this.module(this._coordinates.y + this._direction.y * this._speed);
+    }
 
+    protected module(coordinate): number {
+        if (coordinate < 0) return AbstractInhabitant._dimension + coordinate - 1;
+        return coordinate % AbstractInhabitant._dimension;
     }
 
     get type(): InhabitantsTypes {
@@ -105,7 +108,6 @@ export abstract class AbstractInhabitant {
     public toJSON(): string {
         let clone: Object = {...this};
         clone["_coordinates"] = this.intCoordinates;
-        console.log(clone["_coordinates"], this._type);
         delete clone["worldActions"];
         return JSON.stringify(clone);
     }

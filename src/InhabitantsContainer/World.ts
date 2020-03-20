@@ -68,10 +68,6 @@ export class World implements WorldActionsForInhabitantsInterface {
 
     private addElementsToMap(inhabitants: AbstractInhabitant[]) {
         for (let inhabitant of inhabitants) {
-            if (inhabitant.coordinates.x === null || inhabitant.coordinates.x === NaN) {
-                console.log(inhabitant);
-                process.exit(1);
-            }
             if (!this.map.hasOwnProperty(inhabitant.coordinatesString())) {
                 this.map[inhabitant.coordinatesString()]  = [inhabitant];
             } else {

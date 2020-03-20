@@ -136,3 +136,13 @@ body {
 .card span {
     margin-left: 5px;
 }
+
+#map-canvas {
+    margin: 0 auto;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

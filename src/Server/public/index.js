@@ -1,12 +1,7 @@
 const socket = new WebSocket('ws://localhost:7000');
-
 let canvas;
 let context;
-let max = 10;
-
 const celSize = 80;
-const fonstSize = 25;
-const paddingTop = 10;
 let mapDictionary = {};
 
 const initCanvasAndContext = (id) => {
@@ -14,16 +9,13 @@ const initCanvasAndContext = (id) => {
     context = canvas.getContext('2d');
 };
 
-const writeLine = text => {
-    const data = JSON.parse(text);
+const printData = data => {
     resizeCanvas(data.dimension);
     clearMap();
     addToMap(data.cats, 'cats');
     addToMap(data.dogs, 'dogs');
     addToMap(data.buldozers, 'buldozers');
     printMap();
-
-
     changeInfo(data);
     printInhabitantsCards(data.cats, 'cats-container', 'cat');
     printInhabitantsCards(data.dogs, 'dogs-container', 'dog');
@@ -64,58 +56,30 @@ const printMap = () => {
     for (let coordinatesS in mapDictionary) {
         let coordinates = coordinatesToObject(coordinatesS);
         let img = new Image();
-        // img.width = celSize * 0.2;
-        //
-        // img.height = celSize;
+        let count = 0;
+
         if (mapDictionary[coordinatesS].buldozers !== undefined) {
             img.src = mapDictionary[coordinatesS].buldozers[0]._image;
+            count = mapDictionary[coordinatesS].buldozers.length;
         } else if (mapDictionary[coordinatesS].dogs !== undefined) {
             img.src = mapDictionary[coordinatesS].dogs[0]._image;
+            count = mapDictionary[coordinatesS].dogs.length;
         } else {
             img.src = mapDictionary[coordinatesS].cats[0]._image;
+            count = mapDictionary[coordinatesS].cats.length;
         }
-
 
         img.onload = () => {
-            // let pattern = context.createPattern(img, 'repeat');
-            // context.fillStyle = pattern;
-            // context.fillRect(coordinates.x * celSize, coordinates.y * celSize, celSize, celSize);
             context.drawImage(img, coordinates.x * celSize, coordinates.y * celSize, celSize, celSize);
+            context.font = `${celSize / 2}px Verdana`;
+            context.textAlign = 'center';
+            context.fillStyle = 'red';
+            context.fillText(count.toString(), coordinates.x * celSize + celSize / 2, coordinates.y * celSize + celSize / 2)
         };
-
-    }
-};
-
-const generateClearMap = () => {
-    let mapContainer = document.getElementsByClassName('map')[0];
-    mapContainer.innerHTML = '';
-    mapContainer.style.width = `${max * celSize}px`;
-    mapContainer.style.height = `${max * celSize}px`;
-    let cels = '';
-    let style = `width: ${celSize}px; height: ${celSize - 12}px; background: white; font-size: ${fonstSize}px; text-align: center; padding-top: ${paddingTop}px`;
-    for (let i = 0; i < max; i++) {
-        for (let j = 0; j < max; j++) {
-            cels += `<div class="${i}-${j} cell" style="${style}">0</div>`;
-        }
-    }
-
-    mapContainer.innerHTML = cels;
-};
-
-const markingInhabitants = (inhabitants = [], color = '') => {
-    for (let inhabitantJ of inhabitants) {
-        let inhabitant = JSON.parse(inhabitantJ);
-        console.log(inhabitant);
-        let classDom = `${inhabitant._coordinates.x}-${inhabitant._coordinates.y}`;
-        console.log(classDom);
-        let cel = document.getElementsByClassName(classDom)[0];
-        cel.innerHTML = parseInt(cel.innerHTML) + 1;
-        cel.style.background = color;
     }
 };
 
 const changeInfo = (data) => {
-
     document.getElementsByClassName('cats-count')[0].innerHTML = data.cats.length;
     document.getElementsByClassName('dogs-count')[0].innerHTML = data.dogs.length;
     document.getElementsByClassName('buldozers-count')[0].innerHTML = data.buldozers.length;
@@ -166,6 +130,7 @@ const getUniquePropertiesFromBuldozer = (buldozer) => {
 };
 
 initCanvasAndContext('map-canvas');
+
 socket.onmessage = event => {
-    writeLine(event.data);
+    printData(JSON.parse(event.data));
 };
