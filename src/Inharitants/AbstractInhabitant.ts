@@ -2,7 +2,6 @@ import * as worldIdentification from "../Interface/WorldIdentificationInterface"
 import {Runtime} from "inspector";
 import {InhabitantsTypes} from "./InhabitantsTypes";
 import {Vector} from "../Interface/InhabitantInterface";
-const maxCoordinate = 10;
 
 export abstract class AbstractInhabitant {
     private static _idCounter: number = 0;
@@ -14,6 +13,7 @@ export abstract class AbstractInhabitant {
     private _speed: number = 2;
     private _timeMark: number;
     private _type: InhabitantsTypes;
+    private static _dimension: number;
 
     protected constructor(type: InhabitantsTypes) {
         this._id = AbstractInhabitant._idCounter++;
@@ -25,11 +25,11 @@ export abstract class AbstractInhabitant {
     }
 
     private generateDirection(): Vector {
-        let x = this.getRandomInt(maxCoordinate) + 1;
-        let y = this.getRandomInt(maxCoordinate) + 1;
+        let x = this.getRandomInt(AbstractInhabitant._dimension) + 1;
+        let y = this.getRandomInt(AbstractInhabitant._dimension) + 1;
         const directionModule = Math.sqrt( Math.pow(x, 2) + Math.pow(y, 2));
-        const finishX = Math.ceil(x / directionModule);
-        const finishY = Math.ceil(y / directionModule);
+        const finishX = x / directionModule;
+        const finishY = y / directionModule;
         return {'x': finishX, 'y': finishY};
     }
 
@@ -38,7 +38,7 @@ export abstract class AbstractInhabitant {
     }
 
     private generateCoordinates(): Vector {
-        return {x: this.getRandomInt(maxCoordinate), y: this.getRandomInt(maxCoordinate)};
+        return {x: this.getRandomInt(AbstractInhabitant._dimension), y: this.getRandomInt(AbstractInhabitant._dimension)};
     }
 
     get name(): string {
@@ -65,8 +65,23 @@ export abstract class AbstractInhabitant {
         this._speed = newSpeed;
     }
 
+    public static setDimension(dimension: number) {
+        this._dimension = dimension;
+    }
+
+    public static getDimension() {
+        return this._dimension;
+    }
+
+    private get intCoordinates(): Vector {
+        return {
+            x: Math.floor(this._coordinates.x),
+            y: Math.floor(this._coordinates.y)
+        };
+    }
+
     public coordinatesString(): string {
-        return JSON.stringify(this._coordinates);
+        return JSON.stringify(this.intCoordinates);
     }
 
     set name(name: string) {
@@ -78,9 +93,9 @@ export abstract class AbstractInhabitant {
     }
 
     public move(): void {
-        this._coordinates.x = Math.ceil(this._coordinates.x +this._direction.x * this._speed) % maxCoordinate;
-        this._coordinates.y = Math.ceil(this._coordinates.y + this._direction.y * this._speed) % maxCoordinate;
-        if (this._coordinates.x == null || this._coordinates.x == NaN) console.log('wtf', this.getRandomInt(maxCoordinate));
+        this._coordinates.x = (this._coordinates.x +this._direction.x * this._speed) % AbstractInhabitant._dimension;
+        this._coordinates.y = (this._coordinates.y + this._direction.y * this._speed) % AbstractInhabitant._dimension;
+
     }
 
     get type(): InhabitantsTypes {
@@ -89,6 +104,8 @@ export abstract class AbstractInhabitant {
 
     public toJSON(): string {
         let clone: Object = {...this};
+        clone["_coordinates"] = this.intCoordinates;
+        console.log(clone["_coordinates"], this._type);
         delete clone["worldActions"];
         return JSON.stringify(clone);
     }

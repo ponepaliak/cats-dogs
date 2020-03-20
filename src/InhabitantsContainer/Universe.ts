@@ -1,5 +1,6 @@
 import {World} from "./World";
 import {InhabitantsFactoryInterface} from "../Interface/InhabitantsFactoryInterface";
+import {IConfig} from "../Interface/IConfig";
 
 export class Universe {
     private worldsList: World[] = [];

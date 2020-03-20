@@ -4,6 +4,7 @@ import {Dog} from "../Inharitants/Dog";
 import {Buldozer} from "../Inharitants/Buldozer";
 import {Universe} from "../InhabitantsContainer/Universe";
 import {InhabitantsFactory} from "../Factory/InhabitantsFactory";
+import {IConfig} from "../Interface/IConfig";
 
 export class InhabitantsMaker {
     private static world: World;
@@ -11,9 +12,9 @@ export class InhabitantsMaker {
     private static dogsCount: number = 0;
     private static buldozersCount: number = 0;
 
-    public static createWorld(): World {
+    public static createWorld(config: IConfig): World {
         const universe: Universe = new Universe();
-        const factory = new InhabitantsFactory();
+        const factory = new InhabitantsFactory(config);
         this.world = universe.createWorld(factory);
         return this.world;
     }

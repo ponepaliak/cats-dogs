@@ -17,4 +17,5 @@ export interface AllInhabitants {
     cats: string[];
     dogs: string[];
     buldozers: string[];
+    dimension: number
 }

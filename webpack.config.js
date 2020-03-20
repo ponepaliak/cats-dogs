@@ -21,7 +21,8 @@ module.exports = {
     plugins: [
         new CopyWebpackPlugin([
             {from: 'src/Server/image', to: 'Server/image'},
-            {from: 'src/Server/public', to: 'Server/public'}
+            {from: 'src/Server/public', to: 'Server/public'},
+            {from: 'src/config.json', to: 'config.json'}
         ])
     ],
     resolve: {

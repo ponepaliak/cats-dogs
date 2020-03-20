@@ -6,6 +6,8 @@ import {InhabitantsMaker} from "./InhabitantsMaker";
 import {Simulation} from "./Simulation";
 import {World} from "../InhabitantsContainer/World";
 import {worker} from "cluster";
+import {readFileSync} from "fs";
+import {IConfig} from "../Interface/IConfig";
 
 
 http.createServer(function (request: IncomingMessage, response: ServerResponse): void {
@@ -18,14 +20,14 @@ const options: WebSocket.ServerOptions = {
 };
 
 const ws = new WebSocket.Server(options);
-InhabitantsMaker.createWorld();
 
 ws.on("connection", function(wsNew: WebSocket) {
-    Simulation.init();
+    const config: IConfig = JSON.parse(readFileSync('dist/config.json', 'utf-8'));
+    Simulation.init(config);
     let world: World = Simulation.getWorld();
-    Simulation.sendData(wsNew);
-    setInterval(Simulation.generateNewInhabitants.bind(Simulation), 200);
-    setInterval(Simulation.step.bind(Simulation), 100, wsNew);
+    Simulation.sendData(wsNew, config.dimension);
+    setInterval(Simulation.generateNewInhabitants.bind(Simulation), config.timeStepForInhabitantCrate, config);
+    setInterval(Simulation.step.bind(Simulation), config.timeStepForMove, wsNew, config.dimension);
     // wsNew.on("message", function (message: string) {
         // console.log(message);
         // wsNew.send(InhabitantsMaker.getInhabitant(message));

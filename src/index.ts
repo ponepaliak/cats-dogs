@@ -1,10 +1,10 @@
 import {InhabitantsFactory} from "./Factory/InhabitantsFactory";
 import {Universe} from "./InhabitantsContainer/Universe";
+import {readFileSync} from "fs";
 
-console.log('import');
-
-let firstFactory = new InhabitantsFactory();
-let secondFactory = new InhabitantsFactory();
+const config = JSON.parse(readFileSync('config.json', 'utf-8'));
+let firstFactory = new InhabitantsFactory(config);
+let secondFactory = new InhabitantsFactory(config);
 let universeItem = new Universe();
 let firstWorld = universeItem.createWorld(firstFactory);
 let secondWorld = universeItem.createWorld(secondFactory);
